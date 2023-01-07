@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:chat_bubbles/chat_bubbles.dart';
-import 'package:audioplayers/audioplayers.dart';
-import "package:cached_network_image/cached_network_image.dart";
 
 void main() => runApp(MyApp());
 
@@ -27,7 +25,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  AudioPlayer audioPlayer = new AudioPlayer();
   Duration duration = new Duration();
   Duration position = new Duration();
   bool isPlaying = false;
@@ -46,24 +43,8 @@ class _MyHomePageState extends State<MyHomePage> {
           SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                BubbleNormalImage(
-                  id: 'id001',
-                  image: _image(),
-                  color: Colors.purpleAccent,
-                  tail: true,
-                  delivered: true,
-                ),
-                BubbleNormalAudio(
-                  color: Color(0xFFE8E8EE),
-                  duration: duration.inSeconds.toDouble(),
-                  position: position.inSeconds.toDouble(),
-                  isPlaying: isPlaying,
-                  isLoading: isLoading,
-                  isPause: isPause,
-                  onSeekChanged: _changeSeek,
-                  onPlayPauseButtonClick: _playAudio,
-                  sent: true,
-                ),
+               
+                
                 BubbleNormal(
                   text: 'bubble normal with tail',
                   isSender: false,
@@ -227,74 +208,5 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
-  }
-
-  Widget _image() {
-    return
-    Container(
-      constraints: BoxConstraints(
-        minHeight: 20.0,
-        minWidth: 20.0,
-      ),
-      child: CachedNetworkImage(
-        imageUrl: 'https://i.ibb.co/JCyT1kT/Asset-1.png',
-        progressIndicatorBuilder:
-            (context, url, downloadProgress) => CircularProgressIndicator(
-                value: downloadProgress.progress),
-        errorWidget: (context, url, error) =>
-        const Icon(Icons.error),
-      ),
-    );
-  }
-
-  void _changeSeek(double value) {
-    setState(() {
-      audioPlayer.seek(new Duration(seconds: value.toInt()));
-    });
-  }
-
-  void _playAudio() async {
-    final url =
-        'https://file-examples-com.github.io/uploads/2017/11/file_example_MP3_700KB.mp3';
-    if (isPause) {
-      await audioPlayer.resume();
-      setState(() {
-        isPlaying = true;
-        isPause = false;
-      });
-    } else if (isPlaying) {
-      await audioPlayer.pause();
-      setState(() {
-        isPlaying = false;
-        isPause = true;
-      });
-    } else {
-      setState(() {
-        isLoading = true;
-      });
-      await audioPlayer.play(url);
-      setState(() {
-        isPlaying = true;
-      });
-    }
-
-    audioPlayer.onDurationChanged.listen((Duration d) {
-      setState(() {
-        duration = d;
-        isLoading = false;
-      });
-    });
-    audioPlayer.onAudioPositionChanged.listen((Duration p) {
-      setState(() {
-        position = p;
-      });
-    });
-    audioPlayer.onPlayerCompletion.listen((event) {
-      setState(() {
-        isPlaying = false;
-        duration = new Duration();
-        position = new Duration();
-      });
-    });
   }
 }

@@ -39,6 +39,7 @@ class MessageBar extends StatelessWidget {
   final Color replyCloseColor;
   final Color messageBarColor;
   final Color sendButtonColor;
+  final String hintText;
   final void Function(String)? onTextChanged;
   final void Function(String)? onSend;
   final void Function()? onTapCloseReply;
@@ -57,7 +58,8 @@ class MessageBar extends StatelessWidget {
     this.sendButtonColor = Colors.blue,
     this.onTextChanged,
     this.onSend,
-    this.onTapCloseReply,
+    this.onTapCloseReply, 
+    this.hintText="Mesaj yaz",
   });
 
   /// [MessageBar] builder method
@@ -128,7 +130,7 @@ class MessageBar extends StatelessWidget {
                         maxLines: 3,
                         onChanged: onTextChanged,
                         decoration: InputDecoration(
-                          hintText: "Type your message here",
+                          hintText: hintText,
                           hintMaxLines: 1,
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 8.0, vertical: 10),
